@@ -1,0 +1,45 @@
+﻿@model CommunityPolling.Models.Feedback
+@{
+    ViewData["Title"] = "Feedback";
+}
+
+<h2>Feedback</h2>
+<p>Have an idea or concern? Tell us — this demo saves feedback in memory only.</p>
+
+<form asp-action="Submit" method="post">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email (optional)</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Message" class="form-label">Message</label>
+        <textarea asp-for="Message" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Send Feedback</button>
+</form>
+
+@if (ViewBag.Recent != null && ((List<CommunityPolling.Models.Feedback>)ViewBag.Recent).Count > 0)
+{
+    <hr />
+    <h4>Recent feedback (demo)</h4>
+    <ul class="list-unstyled">
+        @foreach (var fb in (List<CommunityPolling.Models.Feedback>)ViewBag.Recent)
+        {
+            <li class="mb-2">
+                <strong>@(string.IsNullOrWhiteSpace(fb.Name) ? "Anonymous" : fb.Name)</strong>
+                <small class="text-muted"> — @fb.SubmittedAt.ToLocalTime().ToString("g")</small>
+                <div>@fb.Message</div>
+            </li>
+        }
+    </ul>
+}
